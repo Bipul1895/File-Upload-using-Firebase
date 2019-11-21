@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".workshop1">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:background="@color/colorPrimaryDark"
+        android:elevation="0dp"
+        android:id="@+id/id_app_bar">
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Workshop 1"
+            android:textColor="@color/tabTextColor"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="8dp"
+            android:textStyle="bold"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        android:id="@+id/id_tab_layout"
+        app:tabTextColor="@color/tabTextColor"
+        app:tabIndicatorColor="@color/tabIndicatorColor"
+        android:background="@color/colorPrimaryDark"
+        >
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/id_view_pager"></androidx.viewpager.widget.ViewPager>
+
+
+</LinearLayout>

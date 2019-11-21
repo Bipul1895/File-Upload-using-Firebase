@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "201085202883",
+    "firebase_url": "https://btechproject-75e6a.firebaseio.com",
+    "project_id": "btechproject-75e6a",
+    "storage_bucket": "btechproject-75e6a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201085202883:android:3c9db24dcb99129ab44d76",
+        "android_client_info": {
+          "package_name": "com.example.btechproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "201085202883-vc5feuesom4njrd0df5gkl59ojf38q5m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.btechproject",
+            "certificate_hash": "96a5622f62d53ea87a62f8cf9cac523516017a7d"
+          }
+        },
+        {
+          "client_id": "201085202883-5qa01unep65k60ckrautj13a5pkv0702.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAypakdTSpMkn7twGTKvJAiwOJry2-Lu-k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "201085202883-5qa01unep65k60ckrautj13a5pkv0702.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
