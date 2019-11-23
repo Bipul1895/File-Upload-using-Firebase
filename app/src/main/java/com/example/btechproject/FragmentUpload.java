@@ -1,15 +1,23 @@
 package com.example.btechproject;
 
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+
+import android.content.Context;
+import android.content.ContentResolver;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,6 +28,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
@@ -31,7 +40,10 @@ public class FragmentUpload extends Fragment implements View.OnClickListener {
     private Uri filepath;
     private ImageView imageView;
     private ProgressBar progressBar;
+    private EditText editTextFileName;
+
     private StorageReference storageReference;
+    private StorageTask uploadTask;
 
     View view;
     Button uploadButton, chooseButton;
@@ -54,11 +66,14 @@ public class FragmentUpload extends Fragment implements View.OnClickListener {
         uploadButton = getActivity().findViewById(R.id.id_upload_button);
         imageView = getActivity().findViewById(R.id.id_image_view);
         progressBar = getActivity().findViewById(R.id.id_progress_bar);
+        editTextFileName = getActivity().findViewById(R.id.id_edit_text);
 
-        storageReference = FirebaseStorage.getInstance().getReference();
+        storageReference = FirebaseStorage.getInstance().getReference("uploads");
 
         chooseButton.setOnClickListener(this);
         uploadButton.setOnClickListener(this);
+
+
 
     }
 
@@ -67,42 +82,6 @@ public class FragmentUpload extends Fragment implements View.OnClickListener {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select file to upload"), PICK_IMAGE_REQUEST);
-    }
-
-    private void uploadFile() {
-
-        if (filepath != null) {
-
-
-            StorageReference riversRef = storageReference.child("images/uploadObject.jpg");
-
-            riversRef.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // Get a URL to the uploaded content
-                    Toast.makeText(getContext(), "File Uploaded", Toast.LENGTH_LONG).show();
-                    progressBar.setVisibility(View.INVISIBLE);
-                }
-            })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            // Handle unsuccessful uploads
-                            Toast.makeText(getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
-                            progressBar.setVisibility(View.INVISIBLE);
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0 * taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
-                            progressBar.setProgress((int) progress);
-                        }
-                    })
-            ;
-        } else {
-            Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
-        }
     }
 
     @Override
@@ -118,12 +97,74 @@ public class FragmentUpload extends Fragment implements View.OnClickListener {
 
     }
 
+    private String getFileExtension(Uri uri) {
+        ContentResolver cR = getContext().getContentResolver();
+        MimeTypeMap mime=MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+
+    private void uploadFile() {
+
+        if (filepath != null) {
+
+
+            StorageReference riversRef = storageReference.child(System.currentTimeMillis() + '.' + getFileExtension(filepath));
+
+            uploadTask = riversRef.putFile(filepath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // Get a URL to the uploaded content
+
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setProgress(0);
+                        }
+                    }, 500);
+
+
+                    Toast.makeText(getContext(), "File Uploaded", Toast.LENGTH_LONG).show();
+//                    progressBar.setVisibility(View.INVISIBLE);
+                }
+            })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                            Toast.makeText(getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
+//                            progressBar.setVisibility(View.INVISIBLE);
+                        }
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                            progressBar.setProgress((int) progress);
+                        }
+                    })
+            ;
+        } else {
+            Toast.makeText(getContext(), "No file selected", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+
+
     @Override
     public void onClick(View view) {
         if (view == chooseButton) {
             showFileChooser();
         } else if (view == uploadButton) {
-            uploadFile();
+            if(uploadTask != null && uploadTask.isInProgress()){
+                Toast.makeText(getContext(), "Upload in progress", Toast.LENGTH_SHORT).show();
+            }else {
+                uploadFile();
+            }
         }
     }
+
 }
+
+

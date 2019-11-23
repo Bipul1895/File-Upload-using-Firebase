@@ -1,55 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <LinearLayout
-        android:id="@+id/id_linear_layout"
+
+    <Button
+        android:id="@+id/id_choose_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose File" />
+
+    <EditText
+        android:id="@+id/id_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/id_choose_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Choose"
-            android:textStyle="bold"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
-            />
-
-        <Button
-            android:id="@+id/id_upload_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Upload"
-            android:textStyle="bold"
-            android:layout_margin="8dp"
-            android:layout_weight="1"/>
-
-    </LinearLayout>
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/id_choose_button"
+        android:hint="Enter file name" />
 
     <ImageView
         android:id="@+id/id_image_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/id_linear_layout"
+        android:layout_height="match_parent"
         android:layout_above="@id/id_progress_bar"
-        android:layout_marginTop="16dp"
-        />
-    
+        android:layout_below="@id/id_edit_text"
+        android:layout_marginTop="16dp" />
+
     <ProgressBar
         android:id="@+id/id_progress_bar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/id_upload_button"
+        android:layout_alignParentLeft="true"
         android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"
-        />
+        android:layout_marginTop="16dp"/>
 
+    <Button
+        android:id="@+id/id_upload_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Upload" />
 
 
 </RelativeLayout>
